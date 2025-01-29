@@ -1,13 +1,14 @@
 # A function for checking if the number is prime or not
 def is_prime(num):
     cnt = 0
+    
+    if num < 2: 
+        return False
     for i in range(2, num):
         if num % i == 0:
-            cnt += 1
-    if cnt > 1:
-        return False
-    else: 
-        return True
+            return False
+    return True
+            
     
 # A function for filters prime numbers
 def filter_prime(numbers):
@@ -18,7 +19,7 @@ def filter_prime(numbers):
     return my_list
 
 n = int(input("Enter the amount of numbers: "))
-my_list = [int(input("Enter the number: ")) for i in range(n)]
+my_list = [int(input("Enter the number: ")) for _ in range(n)]
 
 print(filter_prime(my_list))
     
