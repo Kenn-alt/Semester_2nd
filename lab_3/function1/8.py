@@ -1,3 +1,4 @@
+# A function for finding 007 in order
 def spy_game(nums):
     my_list = []
     for i in nums:
