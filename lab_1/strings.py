@@ -78,7 +78,7 @@ print(a.capitalize())
 print(a.casefold())
 print(a.center(20, ','))
 print(a.count('l'))
-print(a.find('H'))
+print(a.find('H')) # returns -1
 x = "I'm Jerry, and I'm {years:.2f} years old"
 print(x.format(years = 18)) # out: I'm Jerry, and I'm 18 years old"
 print(x.find('J'))
