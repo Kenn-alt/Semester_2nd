@@ -12,7 +12,7 @@ class Account:
 
     def withdrawal(self, amount):
         if amount > self.balance:
-            print("You don't have enought resources.")
+            print("You don't have enough resources.")
         elif(amount <= 0):
             print("Enter the positive amount of money!")
         else:

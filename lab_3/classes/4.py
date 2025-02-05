@@ -28,6 +28,6 @@ class Point:
 
 my_obj = Point()
 my_obj.get_coord()
-my_obj.show()
-my_obj.move()
-my_obj.dist()
+my_obj.show() # showing the 1st coordinate
+my_obj.move() # the interchanging the x and y of the 1st coordinate
+my_obj.dist() # the distance between the points 1 and 2
