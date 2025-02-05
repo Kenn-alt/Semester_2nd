@@ -44,7 +44,7 @@ print(x is z)
 x = [1, 2, 3]
 print(4 in x)
 
-#Bitwise Operators    &, |, ^, ~, <<, >>
+#Bitwise Operators    &, |, ^, ~, <<, >> 
 
 print(15 >> 2)
 
@@ -54,7 +54,7 @@ print(15 >> 2)
 # +x, -x, ~x
 # * / // %
 # + -
-# << >>
+# << >> -------- >> is for right shift, << is for left shift
 # &
 # ^
 # |

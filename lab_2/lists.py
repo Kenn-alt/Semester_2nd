@@ -51,7 +51,7 @@ print(some_list_5)
 
 #REMOVE LIST ITEMS
 
-some_list_5.remove('mango')
+some_list_5.remove('mango') # If not found it raises an error
 print(some_list_5)
 
 some_list_5.pop(0)
