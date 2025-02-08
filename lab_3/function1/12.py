@@ -11,3 +11,5 @@ for i in range(n):
     my_list.append(num)
 
 histogram(my_list)
+
+
