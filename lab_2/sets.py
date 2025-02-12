@@ -1,3 +1,5 @@
+# Sets - unordered and immutable(you can ADD/REMOVE elements). NO duplicates
+
 # 1
 # Set - a collection which is unordered, unchangeable(but you can add/remove items)
 # and unindexed, do not allow duplicates(duplicates are ignored)

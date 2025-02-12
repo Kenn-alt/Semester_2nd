@@ -1,3 +1,6 @@
+# Tuples - ordered and unchangeable(you can't add elements using functions as in lists). Duplicates OK. FASTER than lists
+
+
 # 1
 # Dynamic typing - you can change the type of the variable after it is created
 
