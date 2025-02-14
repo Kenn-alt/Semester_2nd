@@ -1,7 +1,5 @@
 import datetime
 
-todayyy = datetime.datetime.now()
-
 # print(todayyy.hour)
 # print(todayyy.minute)
 # print(todayyy.second)
