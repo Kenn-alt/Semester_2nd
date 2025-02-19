@@ -51,7 +51,8 @@ x = re.split('\s', txt) # splits by whitespaces
 
 print(x)
 
-x = re.split('\s', txt, maxsplit = 1) # splits with 'maxsplit' parameter equal to 1. Result: ['The', 'rain in Spain']
+x = re.split(r'\s', txt, maxsplit = 1) # splits with 'maxsplit' parameter equal to 1. Result: ['The', 'rain in Spain']
+print(x)
 
 # re.sub()
 x = re.sub('\s', '7', txt) # replaces all whitespaces with 7
