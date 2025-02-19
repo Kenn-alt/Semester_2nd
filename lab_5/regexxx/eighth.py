@@ -10,6 +10,7 @@ print(x[1:])                          # if we don't write '?=', we would erase t
                                       # Example: if we write --- r",(?= )" --- the match is a comma followed by the space. 
                                       # If we find a match we split our string at this place, but keep everything inside brackets, 
                                       # which is the space
+                                      # re.split() -> splits everything before and after the match
 
 
 
