@@ -1,10 +1,10 @@
 John's email is john.doe@example.com, and his backup is johndoe123@work.net.  
-Call him at +1-555-123-4567 or his office line (555) 765-4321.  
+Call him at +1-555-123-4567 or his office line (555) 765-4321. 
 His website is https://www.johndoe.dev, and his IP address is 192.168.0.1.  
 The price of the item is $19.99, but with a discount, it’s now $14.99.  
 Today's date is 17/02/2025, and another format is 2025-02-17.  
 Here’s some HTML: <div class="container">Hello, World!</div>  
-Watch out for special characters like !@#$%^&*()_+={}[]|:;"'<>,.?/
+Watch out for special characters like !@#$%^&*()_+={}[]|:;"'<>,.?/ 
 
 A regular expression (or RE) specifies a set of strings that matches it; 
 the functions in this module let you check if a particular string matches a given regular expression (or if a given regular expression matches a particular string, which comes down to the same thing). 
