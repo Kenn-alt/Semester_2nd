@@ -1,5 +1,5 @@
 # Tuples - ordered and unchangeable(you can't add elements using functions as in lists). Duplicates OK. FASTER than lists
-
+# tuple - ()
 
 # 1
 # Dynamic typing - you can change the type of the variable after it is created
@@ -18,27 +18,27 @@ print(a + b + b) # 3
 # tuple - ()
 
 thistuple = ("apple", 'banana', 'cherry', "apple", 'cherry')
-print(thistuple)
+print(thistuple) # Result: ('apple', 'banana', 'cherry', 'apple', 'cherry')
 
 # To create a tuple with only one item, you have to add a comma after the item, otherwise 
 # Python will not recognize it as a tuple
 
 thistuple = ('apple',)
-print(type(thistuple).__name__)
+print(type(thistuple).__name__) # Result: tuple
 
 #NOT a tuple
 thistuple = ('apple')
-print(type(thistuple).__name__)
+print(type(thistuple).__name__) # Result: str
 
 # A tuple can contain different data types
 
 # Using tuple constructor
 thistuple = tuple(('apple', 'banana', 'cherry'))
-print(thistuple)
+print(thistuple) # ('apple', 'banana', 'cherry')
 
 # 2
 thistuple = ('hello', 'world', 'this', 'is', 'a', 'message')
-print(thistuple[2:5])
+print(thistuple[2:5]) # ('this', 'is', 'a')
 
 if 'apple' in thistuple:
     print("Yes, 'apple' exists in the tuple")
@@ -50,19 +50,19 @@ y = list(x)
 y[1] = 'mango'
 y.append("orange")
 x = tuple(y)
-print(x)
+print(x) # ('apple', 'mango', 'cherry', 'orange')
 
 # It is allowed to add tuples to tuples
 thistuple = ('apple', 'banana', 'cherry')
 y = ('orange',)
 thistuple += y
-print(thistuple)
+print(thistuple) # ('apple', 'banana', 'cherry', 'orange')
 
 #Removing elements from tuples by converting to a list
 y = list(thistuple)
 y.remove('orange')
 thistuple = tuple(y)
-print(thistuple)
+print(thistuple) # ('apple', 'banana', 'cherry')
 
 del x # deleting completely
 
@@ -77,10 +77,10 @@ print(first, second, third)
 
 products = ('potato', 'mushrooms', 'lettuce', 'dairy', 'mango', 'strawberry', 'raspberry')
 (first, second, *third) = products
-print(first, second, third)
+print(first, second, third) # potato mushrooms ['lettuce', 'dairy', 'mango', 'strawberry', 'raspberry']
 
 (*first, second, third) = products
-print(first, second, third)
+print(first, second, third) # ['potato', 'mushrooms', 'lettuce', 'dairy', 'mango'] strawberry raspberry
 
 # 5
 for x in products:
@@ -96,14 +96,14 @@ while(i < len(products)):
 # 6
 # Joining tuples using '+'
 tuple3 = thistuple + products
-print(tuple3)
+print(tuple3) # ('apple', 'banana', 'cherry', 'potato', 'mushrooms', 'lettuce', 'dairy', 'mango', 'strawberry', 'raspberry')
 
 # Multiplying the content by using the '*'
-print(thistuple * 3)
+print(thistuple * 3) # ('apple', 'banana', 'cherry', 'apple', 'banana', 'cherry', 'apple', 'banana', 'cherry')
 
 # 7
 # Tuple Methods
-print(products.count('lettuce'))
+print(products.count('lettuce')) # 1
 
 
-print(products.index('strawberry'))
+print(products.index('strawberry')) # 5
