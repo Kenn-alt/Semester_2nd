@@ -16,7 +16,7 @@ import re
 # 'he.*o' - zero or more occurences
 # 'he.+o' - one or more occurences
 # 'he.?o' - zero or one occurence
-# 'he{3}.o' - exactly three characters after 'he' and before 'o' 
+# 'he.{3}o' - exactly three characters after 'he' and before 'o' 
 # 'hello|bye' - one of the two words 
 
 # Special Sequences 
