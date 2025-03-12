@@ -13,7 +13,7 @@ COLOR_BLUE = (0, 0, 255)
 circle_x = WIDTH // 2
 circle_y = HEIGHT // 2
 
-movement_speed = 0.5
+movement_speed = 5
 
 running = True
 is_red = True
@@ -23,6 +23,9 @@ up_pressed = False
 down_pressed = False
 right_pressed = False
 left_pressed = False
+
+clock = pygame.time.Clock()
+FPS = 60
 
 while running:
     for event in pygame.event.get():
@@ -68,6 +71,7 @@ while running:
         pygame.draw.circle(screen, COLOR_BLUE, (circle_x, circle_y), 40)
 
     pygame.display.flip()
+    clock.tick(FPS)
 
 
 
