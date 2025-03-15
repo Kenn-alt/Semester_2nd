@@ -8,7 +8,7 @@ HEIGHT = 480
 screen = pygame.display.set_mode((800, 480))
 
 COLOR_WHITE = (255, 255, 255)
-COLOR_BLUE = (0, 0, 255)
+COLOR_RED = (255, 0, 0)
 
 rect_x = (WIDTH - 50) // 2 # if we just used WIDTH // 2, the left edge of the rectangle would be at the center of the screen.
 rect_y = (HEIGHT - 50) // 2 # same with height
@@ -34,7 +34,7 @@ while running:
 
     screen.fill(COLOR_WHITE)
 
-    pygame.draw.rect(screen, COLOR_BLUE, pygame.Rect(rect_x, rect_y, 50, 50)) # drawing the moved rectangle on the screen at the given positions
+    pygame.draw.rect(screen, COLOR_RED, pygame.Rect(rect_x, rect_y, 50, 50)) # drawing the moved rectangle on the screen at the given positions
 
     pygame.display.flip()
     clock.tick(60)
