@@ -42,8 +42,8 @@ while running:
 
     # Minute hand 
     rotated_min = pygame.transform.rotate(image_min, -angle_min - 51.5) # rotating the 'minute hand' image clockwise by 'angle_min'
-                                                                      # we subtract 50, because the original image
-                                                                      # is rotated left to the 50 degrees initially
+                                                                      # we subtract 51.5, because the original image
+                                                                      # is rotated left to the 51.5 degrees initially
     rotated_min_rect = rotated_min.get_rect(center = (WIDTH // 2, HEIGHT // 2)) # getting the 'rect' of the 
                                                                                 # rotated 'minute hand' image
 
