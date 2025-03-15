@@ -39,6 +39,8 @@ while running:
     pygame.draw.circle(screen, COLOR_RED, (rect_x + 25, rect_y + 25), 25) # drawing the moved circle on the screen at the given positions
                                                                           # we write +25 because, we have to show
                                                                           # the x, y coordinates of the center of the ball
+                                                                          # otherwise, if we write (rect_x, rect_y), we would've 
+                                                                          # shown the coordinates of top-left corner of the circle
 
     pygame.display.flip()
     clock.tick(60)
