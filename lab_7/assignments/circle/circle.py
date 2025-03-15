@@ -10,8 +10,10 @@ screen = pygame.display.set_mode((800, 480))
 COLOR_WHITE = (255, 255, 255)
 COLOR_RED = (255, 0, 0)
 
-rect_x = (WIDTH - 50) // 2 # if we just used WIDTH // 2, the left edge of the rectangle would be at the center of the screen.
+rect_x = (WIDTH - 50) // 2 # if we just used WIDTH // 2, the left edge of the circle would be at the center of the screen.
+                           # otherwise, it would we would've centered top-left corner of the circle
 rect_y = (HEIGHT - 50) // 2 # same with height
+
 
 clock = pygame.time.Clock()
 
@@ -34,7 +36,9 @@ while running:
 
     screen.fill(COLOR_WHITE)
 
-    pygame.draw.rect(screen, COLOR_RED, pygame.Rect(rect_x, rect_y, 50, 50)) # drawing the moved rectangle on the screen at the given positions
+    pygame.draw.circle(screen, COLOR_RED, (rect_x + 25, rect_y + 25), 25) # drawing the moved circle on the screen at the given positions
+                                                                          # we write +25 because, we have to show
+                                                                          # the x, y coordinates of the center of the ball
 
     pygame.display.flip()
     clock.tick(60)
