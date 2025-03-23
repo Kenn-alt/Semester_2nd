@@ -20,9 +20,9 @@ image_coin = pygame.image.load('coin.png')
 
 scaled_image_coin = pygame.transform.scale(image_coin, (50, 50)) # scaling our coin
 
-font = pygame.font.SysFont('Verdana', 60, True) # getting the font
-font_score = pygame.font.SysFont('Verdana', 40, True)
-font_small = pygame.font.SysFont('Verdana', 20)
+font = pygame.font.Font('game_bubble.ttf', 60) # getting the font
+font_score = pygame.font.Font('game_bubble.ttf', 20)
+font_small = pygame.font.Font('game_bubble.ttf', 20)
 image_game_over = font.render('Game Over', True, COLOR_BLACK) # getting the text with our font
 image_game_over_rect = image_game_over.get_rect(center = (WIDTH // 2, HEIGHT // 2)) # getting the rect object of our text
 
