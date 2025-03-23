@@ -175,4 +175,4 @@ while running:
 
 pygame.quit()
 
-# # 2. to understand why the game stops immediately
+
