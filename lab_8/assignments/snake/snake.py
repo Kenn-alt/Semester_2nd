@@ -178,6 +178,3 @@ while running:
 pygame.quit()
 
 
-# 1. To understand the precedence of screen.blit(base_layer, (0, 0)) and base_layer.blit(screen, (0, 0))
-
-# 2. to understand why the game stops immediately
