@@ -98,12 +98,12 @@ class Snake:
             return True
         return False
     
-    def check_collision_self(self):
-        head = self.body[0]
-        for segment in self.body[1:]:
-            if segment.x == head.x and segment.y == head.y:
-                return True
-        return False
+    # def check_collision_self(self):
+    #     head = self.body[0]
+    #     for segment in self.body[1:]:
+    #         if segment.x == head.x and segment.y == head.y:
+    #             return True
+    #     return False
     
         
 class Food:
@@ -162,10 +162,8 @@ while running:
 
     food.draw_food()
     snake.draw_snake()
-    if snake.check_collision_self():
-        running = False
-
-
+    # if snake.check_collision_self():
+    #     running = False
 
     score_text = font.render(f"Score: {count_food}", True, COLOR_BLUE) # the text of the score 
     level_text = font.render(f'Level: {count_level}', True, COLOR_RED)
@@ -177,4 +175,4 @@ while running:
 
 pygame.quit()
 
-
+# # 2. to understand why the game stops immediately
