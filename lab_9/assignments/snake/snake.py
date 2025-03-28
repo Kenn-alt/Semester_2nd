@@ -112,7 +112,7 @@ class Food:
     def __init__(self):
         self.pos = Point(10, 10)
 
-    def generate_random_pos(self):
+    def generate_random_pos(self): # generating random position for food
         temp_x = random.randint(0, WIDTH // CELL - 1)
         temp_y = random.randint(0, HEIGHT // CELL - 1)
         
@@ -122,10 +122,10 @@ class Food:
             self.pos.x = temp_x
             self.pos.y = temp_y
         else:
-            self.generate_random_pos()
+            self.generate_random_pos() 
 
     
-    def draw_food(self):
+    def draw_food(self): # drawing food
         pygame.draw.rect(screen, COLOR_BLUE, (self.pos.x * CELL, self.pos.y * CELL, CELL, CELL))
 
 food = Food()
@@ -187,7 +187,7 @@ while running:
     screen.blit(score_text, (10, 10)) # showing the score on the screen
     screen.blit(level_text, (600, 10))
 
-    pygame.display.flip()
+    pygame.display.flip() # updating the screen, so that the user sees the changes
     clock.tick(FPS)
 
 pygame.quit()
