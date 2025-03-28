@@ -1,23 +1,19 @@
 import pygame, random, time
+from color_palette import *
 
 pygame.init()
 
 HEIGHT = 720
 WIDTH = 720
 
-COLOR_GRAY = (128, 128, 128)
-COLOR_BLACK = (0, 0, 0)
-COLOR_WHITE = (255, 255, 255)
-COLOR_RED = (255, 0, 0)
-COLOR_GREEN = (0, 255, 0)
-COLOR_LIGHTBLUE = (144, 213, 255)
-COLOR_BLUE = (0, 0, 255)
-
 clock = pygame.time.Clock()
 FPS = 5
 
 count_food = 0
 count_level = 1
+
+color_index = 1 
+color_random = COLOR_BLUE
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -78,18 +74,27 @@ class Snake:
             pygame.draw.rect(screen, COLOR_GREEN, (segment.x * CELL, segment.y * CELL, CELL, CELL))
 
     def check_collision(self, food): # checking collision with food
-        global FPS, count_food, count_level
+        global FPS, count_food, count_level, color_index, color_random
         head = self.body[0]
         if head.x == food.pos.x and head.y == food.pos.y: # if the coords of the head of the snake are the same
             self.body.append(Point(head.x, head.y))       # as the food's coords, add a segment to the snake's body 
             # in between the collision and next move(), graphically the tail and middle segments stay the same, and
             # a new segment is added at the head's position and the head is moved in its direction forward
             food.generate_random_pos()
-            count_food += 1
+            if color_index == 0:
+                count_food += 3
+            elif color_index == 1:
+                count_food += 2
+            elif color_index == 2:
+                count_food += 1
             sound_food.play()
             if count_food % 5 == 0:
                 count_level += 1
                 FPS += 2
+
+            # getting random color_index and color_random
+            color_index = random.randint(0, 2)
+            color_random = food.food_colors[color_index]
 
     def check_collision_wall(self): # checking collision with a wall
         global running
@@ -111,6 +116,7 @@ class Snake:
 class Food:
     def __init__(self):
         self.pos = Point(10, 10)
+        self.food_colors = [COLOR_PURPLE, COLOR_BLUE, COLOR_LIGHTBLUE]
 
     def generate_random_pos(self): # generating random position for food
         temp_x = random.randint(0, WIDTH // CELL - 1)
@@ -126,7 +132,7 @@ class Food:
 
     
     def draw_food(self): # drawing food
-        pygame.draw.rect(screen, COLOR_BLUE, (self.pos.x * CELL, self.pos.y * CELL, CELL, CELL))
+        pygame.draw.rect(screen, color_random, (self.pos.x * CELL, self.pos.y * CELL, CELL, CELL))
 
 food = Food()
 snake = Snake()
@@ -166,7 +172,7 @@ while running:
 
         pygame.display.flip()
 
-        time.sleep(10)
+        time.sleep(5) # waiting for 5 seconds before quitting the game
 
     screen.fill(COLOR_BLACK) # we have to fill our screen with black, otherwise on the new iteration of our
                              # 'while' loop, everything that is to be drawn will be be drawn on top of 
