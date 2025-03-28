@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, time
 
 pygame.init()
 
@@ -22,7 +22,8 @@ count_level = 1
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 font = pygame.font.Font('game_bubble.ttf', 30)
-
+font_endgame = pygame.font.Font('game_bubble.ttf', 80)
+sound_food = pygame.mixer.Sound('food_eating.wav')
 
 CELL = 30
 
@@ -85,6 +86,7 @@ class Snake:
             # a new segment is added at the head's position and the head is moved in its direction forward
             food.generate_random_pos()
             count_food += 1
+            sound_food.play()
             if count_food % 5 == 0:
                 count_level += 1
                 FPS += 2
@@ -149,7 +151,22 @@ while running:
                 snake.dy = -1
 
     if snake.check_collision_wall(): # if the snake collides with the wall, 'running' would be False
-        running = False            
+        running = False
+        screen.fill(COLOR_GREEN)
+
+        # Rendering the final score and level messages
+        image_endgame_score = font_endgame.render("Total Score: " + str(count_food), True, COLOR_BLACK)
+        image_endgame_score_rect = image_endgame_score.get_rect(center = (WIDTH // 2, HEIGHT // 2 - 50))
+        image_endgame_level = font_endgame.render("Level: " + str(count_level), True, COLOR_BLACK)
+        image_endgame_level_rect = image_endgame_level.get_rect(center = (WIDTH // 2, HEIGHT // 2 + 50))
+
+        # Displaying messages on the screen 
+        screen.blit(image_endgame_score, image_endgame_score_rect)
+        screen.blit(image_endgame_level, image_endgame_level_rect)    
+
+        pygame.display.flip()
+
+        time.sleep(10)
 
     screen.fill(COLOR_BLACK) # we have to fill our screen with black, otherwise on the new iteration of our
                              # 'while' loop, everything that is to be drawn will be be drawn on top of 
