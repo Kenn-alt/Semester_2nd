@@ -74,7 +74,7 @@ class Snake:
             pygame.draw.rect(screen, COLOR_GREEN, (segment.x * CELL, segment.y * CELL, CELL, CELL))
 
     def check_collision(self, food): # checking collision with food
-        global FPS, count_food, count_level, color_index, color_random
+        global FPS, count_food, count_level
         head = self.body[0]
         if head.x == food.pos.x and head.y == food.pos.y: # if the coords of the head of the snake are the same
             self.body.append(Point(head.x, head.y))       # as the food's coords, add a segment to the snake's body 
@@ -91,10 +91,6 @@ class Snake:
             if count_food % 5 == 0:
                 count_level += 1
                 FPS += 2
-
-            # getting random color_index and color_random
-            color_index = random.randint(0, 2)
-            color_random = food.food_colors[color_index]
 
     def check_collision_wall(self): # checking collision with a wall
         global running
@@ -117,6 +113,8 @@ class Food:
     def __init__(self):
         self.pos = Point(10, 10)
         self.food_colors = [COLOR_PURPLE, COLOR_BLUE, COLOR_LIGHTBLUE]
+        self.creation_time = time.time() # Storing time when food is created
+        self.food_lifetime = 5 # Food's 'Life Time' in seconds 
 
     def generate_random_pos(self): # generating random position for food
         temp_x = random.randint(0, WIDTH // CELL - 1)
@@ -127,12 +125,23 @@ class Food:
             # generate the coordinates again
             self.pos.x = temp_x
             self.pos.y = temp_y
+            self.creation_time = time.time() # the creation time of food
         else:
             self.generate_random_pos() 
-
     
     def draw_food(self): # drawing food
         pygame.draw.rect(screen, color_random, (self.pos.x * CELL, self.pos.y * CELL, CELL, CELL))
+
+    def generate_random_color(self): # generating random position for food
+        global color_index, color_random
+        # getting random color_index and color_random
+        color_index = random.randint(0, 2)
+        color_random = food.food_colors[color_index]
+
+    def check_food_lifetime(self):
+        if time.time() - self.creation_time > self.food_lifetime: # return True if the food appears on screen longer
+            return True                                           # than it's lifetime
+        return False
 
 food = Food()
 snake = Snake()
@@ -183,6 +192,10 @@ while running:
     snake.move()
     snake.check_collision(food)
 
+    if food.check_food_lifetime(): # if the food is 'expired', regenerate the position and color of the food
+        food.generate_random_color()
+        food.generate_random_pos()
+
     food.draw_food()
     snake.draw_snake()
     # if snake.check_collision_self():
@@ -198,4 +211,5 @@ while running:
 
 pygame.quit()
 
-# # 2. to understand why the game stops immediately
+# 2. to understand why the game stops immediately
+# 3. Add timer for food
