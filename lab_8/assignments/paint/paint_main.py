@@ -93,6 +93,10 @@ while running:
                 eraser = True
             if event.key == pygame.K_d:
                 eraser = False
+            if event.key == pygame.K_EQUALS:
+                THICKNESS += 1
+            if event.key == pygame.K_MINUS:
+                THICKNESS -= 1
             if event.key == pygame.K_1:
                 mode = 'circle'
             if event.key == pygame.K_2:
