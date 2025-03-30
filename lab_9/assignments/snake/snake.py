@@ -210,3 +210,6 @@ while running:
     clock.tick(FPS)
 
 pygame.quit()
+
+# 2. to understand why the game stops immediately
+
