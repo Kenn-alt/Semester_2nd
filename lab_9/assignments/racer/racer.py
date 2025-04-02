@@ -11,6 +11,7 @@ COLOR_GREEN = (0, 255, 0)
 COLOR_BLUE = (0, 0, 255)
 SCORE = 0
 ENEMY_SPEED = 5
+LEVEL = 0
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -72,7 +73,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.bottom = 0
 
     def move(self):
-        self.rect.move_ip(0, ENEMY_SPEED)
+        self.rect.move_ip(0, ENEMY_SPEED + LEVEL)
         if self.rect.top > HEIGHT: # if the top of the image is greater than the HEIGHT of the screen
             self.generate_coord()  # we generate the new random coord for our image to appear
                                    # at the top of the screen
@@ -128,7 +129,7 @@ while running:
     screen.blit(image_background, image_background_rect)
     scores = font_small.render(str(SCORE), True, COLOR_BLUE)
     screen.blit(scores, (WIDTH - 40, 10))
-    image_font_level = font_level.render('Level: ' + str(ENEMY_SPEED - 5), True, COLOR_RED)
+    image_font_level = font_level.render('Level: ' + str(LEVEL), True, COLOR_RED)
     screen.blit(image_font_level, (40, 10))
     
     for entity in all_sprites:
@@ -160,8 +161,7 @@ while running:
             SCORE += 10
         elif coin.coin_index == 2:
             SCORE += 5
-        if SCORE % 50 == 0: 
-            ENEMY_SPEED += 1
+        LEVEL = SCORE // 50 
         coin.random_pos() # repositioning the coin
 
     pygame.display.flip()
