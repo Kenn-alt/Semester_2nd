@@ -26,9 +26,9 @@ command_filter_name_starts = "SELECT * FROM phonebook WHERE username LIKE %s"
 
 command_filter_phone_starts = "SELECT * FROM phonebook WHERE phone_number LIKE %s"
 
-command_delete_by_phone = "DELETE FROM phonebook WHERE username = %s"
+command_delete_by_phone = "DELETE FROM phonebook WHERE phone_number = %s"
 
-command_delete_by_name = "DELETE FROM phonebook WHERE phone_number = %s"
+command_delete_by_name = "DELETE FROM phonebook WHERE username = %s"
 
 cur = conn.cursor()
 
@@ -77,14 +77,18 @@ def change_phone_number():
 # Filtering by the name that starts by the user's input
 def filter_name_start_by():
     starts_with = input("Enter the letters that have to start with: ")
-    result = cur.execute(command_filter_name_starts, (starts_with + '%',))
-    print(result)
+    cur.execute(command_filter_name_starts, (starts_with + '%',))   
+    results = cur.fetchall()
+    for row in results:
+        print(row)
 
 # Filtering by the name taht starts by the user's input
 def filter_phone_start_by():
     starts_with = input('Enter the digits that the phone number has to start with: ')
-    result = cur.execute(command_filter_phone_starts, (starts_with + '%',))
-    print(result)
+    cur.execute(command_filter_phone_starts, (starts_with + '%',)) # After cur.execute(...) the result of the 
+    results = cur.fetchall()                                       # query is saved inside the cur object  
+    for row in results: # .fetchall() takes all rows from the result of the last cur.execute() query 
+        print(row)      # and returns them as a list of tuples
 
 # Deleting by the phone number
 def delete_by_phone():
@@ -103,10 +107,10 @@ def get_user_input():
     commands = """    insert - Inserting into the database
     change name - Changing the name of the user by the id
     change phone number - Changing the phone number of the user by the id
-    filter name - Filtering by the name that starts with the given value
-    filter phone number - Filtering by the phone number that starts with the given value
-    delete name - Deleting record by the phone 
-    delete phone number - Deleting record by the phone number
+    filter by name - Filtering by the name that starts with the given value
+    filter by phone number - Filtering by the phone number that starts with the given value
+    delete by name - Deleting record by the name 
+    delete by phone number - Deleting record by the phone number
     print all - Printing all records in the table
     insert csv - Inserting all records to the database from the csv file"""
     print(commands)
