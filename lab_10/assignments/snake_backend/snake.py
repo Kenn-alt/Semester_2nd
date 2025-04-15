@@ -89,7 +89,7 @@ def enter_username():
         txt_surface = font_enter_username.render(user_input, True, COLOR_GREEN)
         screen.blit(txt_surface, (input_box_rect.x + 5, input_box_rect.y + 5))     
 
-        db_handler.input_user(username)     
+        db_handler.input_user(username)
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -219,6 +219,13 @@ while running:
     # if the username is not still entered, call the function enter_username()
     if not username_entered:
         enter_username()
+        # After the user enters the 'username', if it doesn't exist in the database, we show the message that
+        # that the user haven't played yet
+        # If it exists in the database, we show the max level of the 'username'
+        if db_handler.check_user_exists(username):
+            print(username + ', Your highest level is', db_handler.show_highest_level()[0][0])
+        else:
+            print(username + ', You have not played yet')
     else:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -239,7 +246,10 @@ while running:
                 if event.key == pygame.K_p:
                     paused = not paused
                 if event.key == pygame.K_s and paused: # count_food here is a score of the user
+                        # If the user hits the 'pause' button and 'saves' the results, 
+                        # the results are saved to the database and the highest level is printed on the console
                         db_handler.process_score(count_food, count_level)
+                        print(username + ', Your highest level is', db_handler.show_highest_level()[0][0])
 
         # if the game is not paused, the game loop will continue to work
         if not paused:
@@ -262,7 +272,7 @@ while running:
                 db_handler.process_score(count_food, count_level)
                 # We write [0][0] becaues 'show_highest_level()' returns, a list with a tuple with only one
                 # element, like [(1,)]
-                print("Your max level is", db_handler.show_highest_level()[0][0]) 
+                print(username + ", Your highest level is", db_handler.show_highest_level()[0][0]) 
 
                 pygame.display.flip()
 
