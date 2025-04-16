@@ -102,6 +102,16 @@ def delete_by_name():
     cur.execute(command_delete_by_name, (name,))
     print_rows()
 
+def get_starting_with(letter):
+    command = 'SELECT username FROM phonebook WHERE LEFT(username, 1) = %s'
+    try:
+        with conn.cursor() as cur:
+            cur.execute(command, (letter,))
+            result = cur.fetchall()
+            print(result)
+    except (psycopg2.DatabaseError, Exception) as error:
+        print(error)
+
 # Getting the user input
 def get_user_input():
     commands = """    insert - Inserting into the database
@@ -112,7 +122,8 @@ def get_user_input():
     delete by name - Deleting record by the name 
     delete by phone number - Deleting record by the phone number
     print all - Printing all records in the table
-    insert csv - Inserting all records to the database from the csv file"""
+    insert csv - Inserting all records to the database from the csv file
+    start with letter - Selecting usernames starting with the given letter"""
     print(commands)
     user_input = input("Enter the command: ")
     if user_input == 'insert':
@@ -121,9 +132,9 @@ def get_user_input():
         change_name()
     elif user_input == 'change phone number':
         change_phone_number()
-    elif user_input == 'filter name':
+    elif user_input == 'filter by name':
         filter_name_start_by()
-    elif user_input == 'filter phone number':
+    elif user_input == 'filter by phone number':
         filter_phone_start_by()
     elif user_input == 'delete name':
         delete_by_name()
@@ -134,6 +145,9 @@ def get_user_input():
     elif user_input == 'insert csv':
         csv_to_db(csv_file)
         print_rows()
+    elif user_input == 'start with letter':
+        letter = input('Enter the letter: ')
+        get_starting_with(letter)
 
 # cur.execute(command_create_db)
 
