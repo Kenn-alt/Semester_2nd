@@ -1,5 +1,6 @@
 # Using Functions and stored Procedures
 import psycopg2, csv
+from psycopg2 import extensions
 
 conn = psycopg2.connect(database = "phonebook", 
                         user = "postgres", 
@@ -114,29 +115,45 @@ create_procedure_delete_by_phone = """
         LANGUAGE plpgsql;
 """
 
-create_new_type_for_tuples = """CREATE TYPE user_data AS (
-            username VARCHAR,
-            phone_number VARCHAR
-        )   
+# A new data type for incorrect rows in SQL
+create_new_type_for_incorrect_users = """CREATE TYPE invalid_user_info AS (
+        username VARCHAR,
+        phone_number VARCHAR
+);
+"""
+
+# A new data type in SQL for storing users' info 
+create_new_type_for_users = """
+    CREATE TYPE user_info AS (
+    username VARCHAR,
+    phone_number VARCHAR
+);
 """
 
 create_procedure_insert_users = """
-        CREATE OR REPLACE PROCEDURE insert_users(users_list user_data[]) AS 
+        CREATE OR REPLACE PROCEDURE insert_users(
+            users_list user_info[],
+            INOUT invalid_rows user_info[]
+    ) AS
         $$
         DECLARE
-            rec user_data;
+            rec user_info;
         BEGIN
-            FOREACH rec IN ARRAY users_list LOOP 
-                IF rec.phone_number ~ '^\d{11}$' THEN
-                    INSERT INTO phonebook(username, phone_number) VALUES(rec.username, rec.phone_number);
+            FOREACH rec IN ARRAY users_list LOOP
+                IF rec.phone_number ~ '^\d{11}$' THEN 
+                    INSERT INTO phonebook(username, phone_number)
+                    VALUES(rec.username, rec.phone_number);
                 ELSE 
-                    INSERT INTO invalid_users (username, phone_number) VALUES(rec.username, rec.phone_number);
+                    invalid_rows := array_append(invalid_rows, rec);
                 END IF;
             END LOOP;
         END;
         $$
         LANGUAGE plpgsql;
 """ 
+# invalid_rows := array_append(invalid_rows, rec); -> in this line array_append() appends invalid rows to
+# invalid_rows variable and assigns the result back to the invalid_rows
+
 # ~ is in SQL to perform regular expression matching on a string.
 # ^ -> means 'starts with'
 # \d{11} -> with exactly 11 digits
@@ -234,7 +251,8 @@ def select_record_by_username_pattern(pattern):
         with conn.cursor() as cur:
             cur.execute(command, (pattern,))
             result = cur.fetchall()
-            print(result)
+            for row in result:
+                print(row)
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
 
@@ -246,7 +264,8 @@ def select_record_by_phone_number_pattern(pattern):
         with conn.cursor() as cur:
             cur.execute(command, (pattern,))
             result = cur.fetchall()
-            print(result)
+            for row in result:
+                print(row) 
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
 
@@ -288,19 +307,50 @@ def select_by_offset_and_limit(offset, limit):
         with conn.cursor() as cur:
             cur.execute(command, (offset, limit))
             result = cur.fetchall()
-            print(result)
+            for row in result:
+                print(row)
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
 
-# Procedure to insert many new users by list of name and phone
+# Procedure to insert many new users from a list of names and phones
 def insert_users(users_to_insert):
-    command = 'CALL insert_users(ARRAY(%s))'
+    command_1 = 'CALL insert_users(%s, %s)'
+    invalid_rows = []
+    # Adapting users so that SQL would understand it  
+    adapted_users = [adapt_user(User_info(username, phone)) for username, phone in users_to_insert]
     try:
         with conn.cursor() as cur:
-            cur.execute(command, (users_to_insert,))
+            cur.execute(command_1, (adapted_users, invalid_rows))
             conn.commit()
+            # Printing the invalid rows back to the terminal
+            result = cur.fetchone()
+            for row in result:
+                print('Invalid rows:', row)
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
+            
+            # result = cur.fetchone()[0]
+
+            # invalid_rows = invalid_rows_result[0][0]
+            # print('Invalid rows: ', result)
+    
+# Used to group username and phone number together and pass them as one object to SQL
+class User_info:
+    def __init__(self, username, phone_number):
+        self.username = username
+        self.phone_number = phone_number
+
+# Converts a User_info object into a SQL-safe string for PostgreSQL
+def adapt_user(user):
+    username = psycopg2.extensions.adapt(user.username).getquoted().decode('utf-8')
+    phone_number = psycopg2.extensions.adapt(user.phone_number).getquoted().decode('utf-8')
+    # print(username, phone_number)
+    # print(f'ROW({username}, {phone_number})::user_info')
+    return psycopg2.extensions.AsIs(f'ROW({username}, {phone_number})::user_info')
+
+# whenever you pass a User_info object into a query, psycopg2 will 
+# automatically call your adapt_user() function to get the correct SQL version.
+psycopg2.extensions.register_adapter(User_info, adapt_user)
 
 # Function for executing queries
 def execute_query(query):
@@ -310,6 +360,15 @@ def execute_query(query):
             conn.commit()
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
+
+users_to_insert = (
+    ("Sakura Haruno", '87005554433'),
+    ('Kakashi Hatake', '87001112233'),
+    ('Hinata Hyuga', '87009998877'),
+    ('Hashirama Senju', '879872223232'),
+    ('Naruto Uzumaki', '8780'),
+    ('Itachi Uchiha', '8777')
+)
 
 # Getting the user input
 def get_user_input():
@@ -356,7 +415,7 @@ def get_user_input():
         get_starting_with(letter)
     elif user_input == 'select by name start with pattern':
         pattern = input("Enter the pattern: ")
-        select_record_by_phone_number_pattern(pattern)
+        select_record_by_username_pattern(pattern)
     elif user_input == 'select by phone_number start with pattern':
         pattern = input("Enter the pattern: ")
         select_record_by_phone_number_pattern(pattern)
@@ -376,14 +435,6 @@ def get_user_input():
         select_by_offset_and_limit(offset, limit)
     elif user_input == 'insert users':
         insert_users(users_to_insert)
-
-
-    
-users_to_insert = (
-    ("Sakura Haruno", '87005554433'),
-    ('Kakashi Hatake', '87001112233'),
-    ('Hinata Hyuga', '87009998877')
-)
 
 # cur.execute(command_create_db)
 
@@ -413,9 +464,11 @@ get_user_input()
 # execute_query(create_function_offset_limit)
 
 
-# Creating new data type in SQL for tuples
-# execute_query(create_new_type_for_tuples)
+# Creating new data type in SQL for incorrect users
+# execute_query(create_new_type_for_incorrect_users)
 
+# Creating new data type in SQL for users
+# execute_query(create_new_type_for_users)
 
 # Procedure to insert many new users by list of name and phone
 # execute_query(create_procedure_insert_users)
