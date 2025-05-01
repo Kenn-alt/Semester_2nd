@@ -461,7 +461,7 @@ get_user_input()
 
 
 # Function to querying data from the tables with pagination (by limit and offset)
-# execute_query(create_function_offset_limit)
+# execute_query(create_function_offset_limit)s
 
 
 # Creating new data type in SQL for incorrect users
@@ -477,4 +477,5 @@ conn.commit()
 
 cur.close()
 conn.close()
+
 
